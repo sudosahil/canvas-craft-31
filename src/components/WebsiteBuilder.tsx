@@ -22,7 +22,11 @@ export interface Template {
   elements: BuilderElement[];
 }
 
-const WebsiteBuilder = () => {
+interface WebsiteBuilderProps {
+  projectId?: string;
+}
+
+const WebsiteBuilder = ({ projectId }: WebsiteBuilderProps) => {
   const [elements, setElements] = useState<BuilderElement[]>([]);
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const [currentTemplate, setCurrentTemplate] = useState<Template | null>(null);

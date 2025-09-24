@@ -24,72 +24,229 @@ interface BuilderSidebarProps {
 const templates: TemplateType[] = [
   {
     id: "portfolio",
-    name: "Portfolio",
+    name: "Creative Portfolio",
     preview: "/api/placeholder/200/150",
     elements: [
       {
-        id: "hero-text",
-        type: "text",
-        position: { x: 100, y: 50 },
-        size: { width: 600, height: 120 },
-        content: { text: "John Doe", tag: "h1" },
-        styles: {
-          fontSize: "48px",
-          fontWeight: "700",
-          color: "hsl(var(--foreground))",
-          textAlign: "center",
-        },
-      },
-      {
-        id: "subtitle",
-        type: "text",
-        position: { x: 100, y: 180 },
-        size: { width: 600, height: 60 },
-        content: { text: "Creative Designer & Developer", tag: "p" },
-        styles: {
-          fontSize: "24px",
-          fontWeight: "400",
-          color: "hsl(var(--muted-foreground))",
-          textAlign: "center",
-        },
-      },
-    ],
-  },
-  {
-    id: "landing-page",
-    name: "Landing Page",
-    preview: "/api/placeholder/200/150",
-    elements: [
-      {
-        id: "headline",
+        id: "header-1",
         type: "text",
         position: { x: 50, y: 50 },
-        size: { width: 700, height: 80 },
-        content: { text: "Build Amazing Websites", tag: "h1" },
+        size: { width: 600, height: 80 },
+        content: { text: "Sarah Johnson", tag: "h1" },
         styles: {
-          fontSize: "42px",
-          fontWeight: "700",
+          fontSize: "48px",
           color: "hsl(var(--foreground))",
+          fontWeight: "700",
           textAlign: "center",
-        },
+        }
       },
       {
-        id: "cta-button",
+        id: "subtitle-1",
+        type: "text", 
+        position: { x: 50, y: 140 },
+        size: { width: 600, height: 40 },
+        content: { text: "UX/UI Designer & Creative Director", tag: "h2" },
+        styles: {
+          fontSize: "24px",
+          color: "hsl(var(--primary))",
+          fontWeight: "500",
+          textAlign: "center",
+        }
+      },
+      {
+        id: "description-1", 
+        type: "text",
+        position: { x: 50, y: 200 },
+        size: { width: 600, height: 80 },
+        content: { text: "I craft beautiful digital experiences that delight users and drive business results. With 8+ years of experience in design and strategy.", tag: "p" },
+        styles: {
+          fontSize: "18px",
+          color: "hsl(var(--muted-foreground))",
+          fontWeight: "400", 
+          textAlign: "center",
+          lineHeight: "1.6",
+        }
+      },
+      {
+        id: "cta-button-1",
         type: "button",
-        position: { x: 350, y: 200 },
-        size: { width: 180, height: 50 },
-        content: { text: "Get Started", href: "#" },
+        position: { x: 225, y: 300 },
+        size: { width: 150, height: 50 },
+        content: { text: "View Portfolio", href: "#work" },
         styles: {
           backgroundColor: "hsl(var(--primary))",
           color: "hsl(var(--primary-foreground))",
-          padding: "16px 32px",
+          padding: "12px 24px",
+          borderRadius: "8px",
+          fontSize: "16px",
+          fontWeight: "500",
+        }
+      },
+      {
+        id: "contact-button-1",
+        type: "button",
+        position: { x: 395, y: 300 },
+        size: { width: 130, height: 50 },
+        content: { text: "Contact Me", href: "#contact" },
+        styles: {
+          backgroundColor: "transparent",
+          color: "hsl(var(--foreground))",
+          border: "2px solid hsl(var(--border))",
+          padding: "12px 24px", 
+          borderRadius: "8px",
+          fontSize: "16px",
+          fontWeight: "500",
+        }
+      }
+    ]
+  },
+  {
+    id: "blog",
+    name: "Personal Blog", 
+    preview: "/api/placeholder/200/150",
+    elements: [
+      {
+        id: "blog-header-1",
+        type: "text",
+        position: { x: 50, y: 50 },
+        size: { width: 600, height: 60 },
+        content: { text: "TechInsights Blog", tag: "h1" },
+        styles: {
+          fontSize: "40px",
+          color: "hsl(var(--foreground))",
+          fontWeight: "800",
+          textAlign: "center",
+        }
+      },
+      {
+        id: "blog-tagline-1",
+        type: "text",
+        position: { x: 50, y: 120 },
+        size: { width: 600, height: 40 },
+        content: { text: "Exploring the latest in technology and innovation", tag: "p" },
+        styles: {
+          fontSize: "18px",
+          color: "hsl(var(--muted-foreground))",
+          fontWeight: "400",
+          textAlign: "center", 
+          fontStyle: "italic",
+        }
+      },
+      {
+        id: "blog-post-1",
+        type: "text",
+        position: { x: 50, y: 200 },
+        size: { width: 280, height: 120 },
+        content: { text: "The Future of AI in Web Development\n\nDiscover how artificial intelligence is revolutionizing the way we build websites and applications.", tag: "div" },
+        styles: {
+          fontSize: "16px",
+          color: "hsl(var(--foreground))",
+          fontWeight: "400",
+          textAlign: "left",
+          backgroundColor: "hsl(var(--card))",
+          padding: "20px",
           borderRadius: "12px",
+          border: "1px solid hsl(var(--border))",
+        }
+      },
+      {
+        id: "blog-post-2",
+        type: "text",
+        position: { x: 370, y: 200 },
+        size: { width: 280, height: 120 },
+        content: { text: "Design Systems That Scale\n\nLearn how to create design systems that grow with your product and team.", tag: "div" },
+        styles: {
+          fontSize: "16px",
+          color: "hsl(var(--foreground))",
+          fontWeight: "400",
+          textAlign: "left",
+          backgroundColor: "hsl(var(--card))",
+          padding: "20px",
+          borderRadius: "12px",
+          border: "1px solid hsl(var(--border))",
+        }
+      }
+    ]
+  },
+  {
+    id: "landing",
+    name: "Business Landing",
+    preview: "/api/placeholder/200/150", 
+    elements: [
+      {
+        id: "hero-1",
+        type: "text", 
+        position: { x: 50, y: 80 },
+        size: { width: 700, height: 120 },
+        content: { text: "Scale Your Business with CloudFlow", tag: "h1" },
+        styles: {
+          fontSize: "48px",
+          color: "hsl(var(--foreground))",
+          fontWeight: "800",
+          textAlign: "center",
+        }
+      },
+      {
+        id: "subtitle-1",
+        type: "text",
+        position: { x: 50, y: 220 },
+        size: { width: 700, height: 60 },
+        content: { text: "The all-in-one platform that helps businesses automate workflows, boost productivity, and drive growth.", tag: "p" },
+        styles: {
+          fontSize: "20px",
+          color: "hsl(var(--muted-foreground))",
+          fontWeight: "400",
+          textAlign: "center",
+          lineHeight: "1.5",
+        }
+      },
+      {
+        id: "cta-main",
+        type: "button",
+        position: { x: 275, y: 300 },
+        size: { width: 150, height: 50 },
+        content: { text: "Start Free Trial", href: "#signup" },
+        styles: {
+          backgroundColor: "hsl(var(--primary))",
+          color: "hsl(var(--primary-foreground))",
+          padding: "14px 28px",
+          borderRadius: "8px",
           fontSize: "16px",
           fontWeight: "600",
-        },
+        }
       },
-    ],
-  },
+      {
+        id: "demo-button",
+        type: "button",
+        position: { x: 445, y: 300 },
+        size: { width: 130, height: 50 },
+        content: { text: "Watch Demo", href: "#demo" },
+        styles: {
+          backgroundColor: "transparent",
+          color: "hsl(var(--foreground))",
+          border: "2px solid hsl(var(--border))",
+          padding: "14px 28px",
+          borderRadius: "8px", 
+          fontSize: "16px",
+          fontWeight: "600",
+        }
+      },
+      {
+        id: "features-text",
+        type: "text",
+        position: { x: 50, y: 400 },
+        size: { width: 700, height: 80 },
+        content: { text: "✓ 99.9% Uptime Guarantee  ✓ Advanced Analytics  ✓ 24/7 Support  ✓ Enterprise Security", tag: "p" },
+        styles: {
+          fontSize: "16px",
+          color: "hsl(var(--muted-foreground))",
+          fontWeight: "500",
+          textAlign: "center",
+          lineHeight: "1.8",
+        }
+      }
+    ]
+  }
 ];
 
 export const BuilderSidebar = ({ onAddElement, onLoadTemplate, currentTemplate }: BuilderSidebarProps) => {

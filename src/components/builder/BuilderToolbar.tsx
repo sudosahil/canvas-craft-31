@@ -35,11 +35,11 @@ export const BuilderToolbar = ({
       {/* Center Section */}
       <div className="flex items-center space-x-2">
         <Button variant="outline" size="sm" disabled>
-          <Undo className="h-4 w-4 mr-2" />
+          <Undo className="h-4 w-4 mr-1" />
           Undo
         </Button>
         <Button variant="outline" size="sm" disabled>
-          <Redo className="h-4 w-4 mr-2" />
+          <Redo className="h-4 w-4 mr-1" />
           Redo
         </Button>
         
@@ -52,12 +52,12 @@ export const BuilderToolbar = ({
         >
           {isPreviewMode ? (
             <>
-              <EyeOff className="h-4 w-4 mr-2" />
+              <EyeOff className="h-4 w-4 mr-1" />
               Exit Preview
             </>
           ) : (
             <>
-              <Eye className="h-4 w-4 mr-2" />
+              <Eye className="h-4 w-4 mr-1" />
               Preview
             </>
           )}
@@ -67,17 +67,17 @@ export const BuilderToolbar = ({
       {/* Right Section */}
       <div className="flex items-center space-x-2">
         <Button variant="outline" size="sm">
-          <Settings className="h-4 w-4 mr-2" />
+          <Settings className="h-4 w-4 mr-1" />
           Settings
         </Button>
         
         <Button variant="outline" size="sm" onClick={onSave}>
-          <Save className="h-4 w-4 mr-2" />
+          <Save className="h-4 w-4 mr-1" />
           Save
         </Button>
         
         <Button size="sm" onClick={onPublish} className="bg-gradient-primary">
-          <Globe className="h-4 w-4 mr-2" />
+          <Globe className="h-4 w-4 mr-1" />
           Publish
         </Button>
       </div>
