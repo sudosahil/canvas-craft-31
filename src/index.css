@@ -8,35 +8,67 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Modern website builder color system */
+    --background: 248 250 252;
+    --foreground: 226 232 240;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 255 255 255;
+    --card-foreground: 51 65 85;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 255 255 255;
+    --popover-foreground: 51 65 85;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Deep purple gradient */
+    --primary: 263 70% 50%;
+    --primary-foreground: 255 255 255;
+    --primary-glow: 270 75% 60%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Professional grays */
+    --secondary: 226 232 240;
+    --secondary-foreground: 71 85 105;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted: Subtle backgrounds */
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Vibrant blue */
+    --accent: 217 91% 60%;
+    --accent-foreground: 255 255 255;
+
+    /* Canvas and editor colors */
+    --canvas: 249 250 251;
+    --canvas-grid: 226 232 240;
+    --sidebar: 30 41 59;
+    --sidebar-foreground: 226 232 240;
+
+    /* Interactive states */
+    --hover: 263 70% 55%;
+    --selection: 217 91% 60%;
+    --selection-bg: 217 91% 60% / 0.1;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 226 232 240;
+    --input: 226 232 240;
+    --ring: 263 70% 50%;
 
-    --radius: 0.5rem;
+    /* Modern gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(263 70% 50%), hsl(270 75% 60%));
+    --gradient-accent: linear-gradient(135deg, hsl(217 91% 60%), hsl(220 91% 70%));
+    --gradient-canvas: linear-gradient(180deg, hsl(249 250 251), hsl(248 250 252));
+    
+    /* Beautiful shadows */
+    --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-large: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-glow: 0 0 0 1px hsl(263 70% 50% / 0.05), 0 0 20px hsl(263 70% 50% / 0.3);
+
+    /* Smooth transitions */
+    --transition-fast: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
