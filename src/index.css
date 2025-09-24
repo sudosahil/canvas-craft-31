@@ -9,37 +9,37 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Modern website builder color system */
-    --background: 248 250 252;
-    --foreground: 226 232 240;
+    --background: 214 32% 91%;
+    --foreground: 215 16% 47%;
 
-    --card: 255 255 255;
-    --card-foreground: 51 65 85;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 27%;
 
-    --popover: 255 255 255;
-    --popover-foreground: 51 65 85;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 27%;
 
     /* Primary: Deep purple gradient */
     --primary: 263 70% 50%;
-    --primary-foreground: 255 255 255;
+    --primary-foreground: 0 0% 100%;
     --primary-glow: 270 75% 60%;
 
     /* Secondary: Professional grays */
-    --secondary: 226 232 240;
-    --secondary-foreground: 71 85 105;
+    --secondary: 215 16% 47%;
+    --secondary-foreground: 215 25% 27%;
 
     /* Muted: Subtle backgrounds */
-    --muted: 248 250 252;
-    --muted-foreground: 100 116 139;
+    --muted: 214 32% 91%;
+    --muted-foreground: 215 20% 65%;
 
     /* Accent: Vibrant blue */
     --accent: 217 91% 60%;
-    --accent-foreground: 255 255 255;
+    --accent-foreground: 0 0% 100%;
 
     /* Canvas and editor colors */
-    --canvas: 249 250 251;
-    --canvas-grid: 226 232 240;
-    --sidebar: 30 41 59;
-    --sidebar-foreground: 226 232 240;
+    --canvas: 214 32% 91%;
+    --canvas-grid: 215 16% 47%;
+    --sidebar: 222 47% 11%;
+    --sidebar-foreground: 215 16% 47%;
 
     /* Interactive states */
     --hover: 263 70% 55%;
@@ -49,14 +49,14 @@ All colors MUST be HSL.
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 226 232 240;
-    --input: 226 232 240;
+    --border: 215 16% 47%;
+    --input: 215 16% 47%;
     --ring: 263 70% 50%;
 
     /* Modern gradients */
     --gradient-primary: linear-gradient(135deg, hsl(263 70% 50%), hsl(270 75% 60%));
     --gradient-accent: linear-gradient(135deg, hsl(217 91% 60%), hsl(220 91% 70%));
-    --gradient-canvas: linear-gradient(180deg, hsl(249 250 251), hsl(248 250 252));
+    --gradient-canvas: linear-gradient(180deg, hsl(214 32% 91%), hsl(214 32% 91%));
     
     /* Beautiful shadows */
     --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
