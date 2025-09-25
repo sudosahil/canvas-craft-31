@@ -49,23 +49,23 @@ const Landing = () => {
     {
       id: "portfolio",
       name: "Creative Portfolio",
-      description: "Showcase your work with a modern, professional portfolio design",
+      description: "Multi-page portfolio with Home, About, Portfolio, and Contact sections. Perfect for designers and creative professionals.",
       preview: "/api/placeholder/400/300",
       category: "Portfolio"
     },
     {
-      id: "blog",
-      name: "Personal Blog",
-      description: "Share your thoughts with a clean, readable blog layout",
+      id: "business",
+      name: "Professional Business",
+      description: "Complete business website with Services, About, and Contact pages. Ideal for consultants and service providers.",
       preview: "/api/placeholder/400/300", 
-      category: "Blog"
+      category: "Business"
     },
     {
-      id: "landing",
-      name: "Business Landing",
-      description: "Convert visitors with a high-impact landing page",
+      id: "restaurant",
+      name: "Restaurant & Food", 
+      description: "Full restaurant website with Menu, About, and Reservation pages. Ready-to-use for food businesses.",
       preview: "/api/placeholder/400/300",
-      category: "Business"
+      category: "Restaurant"
     }
   ];
 

@@ -3,6 +3,7 @@ import { BuilderSidebar } from "./builder/BuilderSidebar";
 import { BuilderCanvas } from "./builder/BuilderCanvas";
 import { PropertyPanel } from "./builder/PropertyPanel";
 import { BuilderToolbar } from "./builder/BuilderToolbar";
+import { PageNavigation } from "./builder/PageNavigation";
 
 export type ElementType = "text" | "image" | "button" | "video";
 
@@ -31,6 +32,7 @@ const WebsiteBuilder = ({ projectId }: WebsiteBuilderProps) => {
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const [currentTemplate, setCurrentTemplate] = useState<Template | null>(null);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [currentPage, setCurrentPage] = useState("home");
 
   const addElement = (type: ElementType, position: { x: number; y: number }) => {
     const newElement: BuilderElement = {
@@ -65,6 +67,15 @@ const WebsiteBuilder = ({ projectId }: WebsiteBuilderProps) => {
     setSelectedElement(null);
   };
 
+  const handlePageChange = (pageId: string) => {
+    setCurrentPage(pageId);
+    setSelectedElement(null);
+  };
+
+  const handleAddPage = () => {
+    console.log('Add new page functionality');
+  };
+
   return (
     <div className="h-screen flex bg-background overflow-hidden">
       {/* Sidebar */}
@@ -83,6 +94,17 @@ const WebsiteBuilder = ({ projectId }: WebsiteBuilderProps) => {
           onSave={() => console.log('Save project')}
           onPublish={() => console.log('Publish site')}
         />
+        
+        {/* Page Navigation */}
+        {!isPreviewMode && elements.length > 0 && (
+          <div className="px-4 py-2 border-b border-border bg-card/50">
+            <PageNavigation 
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+              onAddPage={handleAddPage}
+            />
+          </div>
+        )}
         
         {/* Canvas */}
         <div className="flex-1 flex">
