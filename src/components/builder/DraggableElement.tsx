@@ -1,7 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Trash2, Move, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { BuilderElement } from "../WebsiteBuilder";
+import { useDraggable } from "@dnd-kit/core";
 
 interface DraggableElementProps {
   element: BuilderElement;
@@ -28,6 +29,7 @@ export const DraggableElement = ({
 }: DraggableElementProps) => {
   const [isResizing, setIsResizing] = useState(false);
   const [isDraggingElement, setIsDraggingElement] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
   const startPos = useRef({ x: 0, y: 0 });
   const startSize = useRef({ width: 0, height: 0 });
@@ -38,7 +40,10 @@ export const DraggableElement = ({
     e.stopPropagation();
     onSelect();
     
-    if (e.target === elementRef.current || (e.target as HTMLElement).classList.contains('drag-handle')) {
+    // Ensure drag functionality works for all element types
+    if (e.target === elementRef.current || 
+        (e.target as HTMLElement).classList.contains('drag-handle') ||
+        (e.target as HTMLElement).classList.contains('element-content')) {
       setIsDraggingElement(true);
       onDragStart();
       startPos.current = {
@@ -47,20 +52,41 @@ export const DraggableElement = ({
       };
     }
   };
+  const [isEditing, setIsEditing] = useState(false);
+  const elementRef = useRef<HTMLDivElement>(null);
+  const startSize = useRef({ width: 0, height: 0 });
+  
+  // Use dnd-kit's useDraggable hook
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: element.id,
+    disabled: isPreviewMode || isResizing || isEditing,
+  });
+
+  // Handle element selection
+  const handleClick = (e: React.MouseEvent) => {
+    if (isPreviewMode) return;
+    e.stopPropagation();
+    onSelect();
+  };
+
+  // Handle text editing
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    if (isPreviewMode || element.type !== "text") return;
+    e.stopPropagation();
+    setIsEditing(true);
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onUpdate({
+      content: { ...element.content, text: e.target.value },
+    });
+  };
+
+  const handleTextBlur = () => {
+    setIsEditing(false);
+  };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (isDraggingElement && !isPreviewMode) {
-      const newX = e.clientX - startPos.current.x;
-      const newY = e.clientY - startPos.current.y;
-      
-      onUpdate({
-        position: {
-          x: Math.max(0, newX),
-          y: Math.max(0, newY),
-        },
-      });
-    }
-    
     if (isResizing && !isPreviewMode) {
       const newWidth = Math.max(50, e.clientX - element.position.x);
       const newHeight = Math.max(30, e.clientY - element.position.y);
@@ -75,7 +101,6 @@ export const DraggableElement = ({
   };
 
   const handleMouseUp = () => {
-    setIsDraggingElement(false);
     setIsResizing(false);
     onDragEnd();
   };
@@ -88,12 +113,12 @@ export const DraggableElement = ({
     startSize.current = { ...element.size };
   };
 
-  // Add global mouse event listeners
-  useState(() => {
+  // Add global mouse event listeners for resizing
+  useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => handleMouseMove(e);
     const handleGlobalMouseUp = () => handleMouseUp();
 
-    if (isDraggingElement || isResizing) {
+    if (isResizing) {
       document.addEventListener('mousemove', handleGlobalMouseMove);
       document.addEventListener('mouseup', handleGlobalMouseUp);
       
@@ -102,25 +127,34 @@ export const DraggableElement = ({
         document.removeEventListener('mouseup', handleGlobalMouseUp);
       };
     }
-  });
+  }, [isResizing]);
 
   const renderContent = () => {
     switch (element.type) {
       case "text":
         const Tag = element.content.tag || "p";
+        if (isEditing) {
+          return (
+            <textarea
+              value={element.content.text}
+              onChange={handleTextChange}
+              onBlur={handleTextBlur}
+              style={{
+                ...element.styles,
+                resize: "none",
+                border: "none",
+                background: "transparent",
+              }}
+              className="w-full h-full outline-none"
+              autoFocus
+            />
+          );
+        }
         return (
           <Tag
             style={element.styles}
-            className="w-full h-full outline-none resize-none"
-            contentEditable={!isPreviewMode}
-            suppressContentEditableWarning
-            onBlur={(e) => {
-              if (!isPreviewMode) {
-                onUpdate({
-                  content: { ...element.content, text: e.target.textContent },
-                });
-              }
-            }}
+            className="w-full h-full outline-none"
+            onDoubleClick={handleDoubleClick}
           >
             {element.content.text}
           </Tag>
@@ -205,7 +239,7 @@ export const DraggableElement = ({
       onMouseDown={handleMouseDown}
     >
       {/* Element Content */}
-      <div className="w-full h-full">
+      <div className="w-full h-full element-content">
         {renderContent()}
       </div>
 
@@ -214,12 +248,12 @@ export const DraggableElement = ({
         <>
           {/* Resize Handle */}
           <div
-            className="absolute bottom-0 right-0 w-3 h-3 bg-selection border border-white rounded-sm cursor-se-resize"
+            className="absolute bottom-0 right-0 w-4 h-4 bg-selection border border-white rounded-sm cursor-se-resize"
             onMouseDown={handleResizeStart}
           />
           
-          {/* Action Buttons */}
-          <div className="absolute -top-8 left-0 flex items-center space-x-1 bg-card border border-border rounded-md shadow-medium px-2 py-1">
+          {/* Action Buttons - Fix placement to -top-10 */}
+          <div className="absolute -top-10 left-0 flex items-center space-x-1 bg-card border border-border rounded-md shadow-medium px-2 py-1">
             <Button
               size="sm"
               variant="ghost"

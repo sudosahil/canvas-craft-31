@@ -16,6 +16,10 @@ interface BuilderToolbarProps {
   onTogglePreview: () => void;
   onSave: () => void;
   onPublish: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 
 export const BuilderToolbar = ({
@@ -23,6 +27,10 @@ export const BuilderToolbar = ({
   onTogglePreview,
   onSave,
   onPublish,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
 }: BuilderToolbarProps) => {
   return (
     <div className="h-14 bg-card border-b border-border flex items-center justify-between px-4">
@@ -34,11 +42,21 @@ export const BuilderToolbar = ({
 
       {/* Center Section */}
       <div className="flex items-center space-x-2">
-        <Button variant="outline" size="sm" disabled>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          disabled={!canUndo || isPreviewMode}
+          onClick={onUndo}
+        >
           <Undo className="h-4 w-4 mr-1" />
           Undo
         </Button>
-        <Button variant="outline" size="sm" disabled>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          disabled={!canRedo || isPreviewMode}
+          onClick={onRedo}
+        >
           <Redo className="h-4 w-4 mr-1" />
           Redo
         </Button>

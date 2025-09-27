@@ -37,7 +37,10 @@ All colors MUST be HSL.
 
     /* Canvas and editor colors */
     --canvas: 214 32% 91%;
-    --canvas-grid: 215 16% 47%;
+    /* Update the canvas grid color to be more subtle */
+    /* Remove this duplicate :root selector */
+    --canvas-grid: 215 16% 47% / 0.15; /* Make grid more subtle */
+    
     --sidebar: 222 47% 11%;
     --sidebar-foreground: 215 16% 47%;
 

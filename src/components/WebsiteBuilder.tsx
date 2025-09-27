@@ -33,8 +33,19 @@ const WebsiteBuilder = ({ projectId }: WebsiteBuilderProps) => {
   const [currentTemplate, setCurrentTemplate] = useState<Template | null>(null);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [currentPage, setCurrentPage] = useState("home");
+  
+  // Add state history for undo/redo
+  const [pastStates, setPastStates] = useState<BuilderElement[][]>([]);
+  const [futureStates, setFutureStates] = useState<BuilderElement[][]>([]);
+
+  // Helper function to save current state before changes
+  const saveCurrentState = () => {
+    setPastStates([...pastStates, [...elements]]);
+    setFutureStates([]);
+  };
 
   const addElement = (type: ElementType, position: { x: number; y: number }) => {
+    saveCurrentState();
     const newElement: BuilderElement = {
       id: `element-${Date.now()}`,
       type,
@@ -49,12 +60,14 @@ const WebsiteBuilder = ({ projectId }: WebsiteBuilderProps) => {
   };
 
   const updateElement = (elementId: string, updates: Partial<BuilderElement>) => {
+    saveCurrentState();
     setElements(elements.map(el => 
       el.id === elementId ? { ...el, ...updates } : el
     ));
   };
 
   const deleteElement = (elementId: string) => {
+    saveCurrentState();
     setElements(elements.filter(el => el.id !== elementId));
     if (selectedElement === elementId) {
       setSelectedElement(null);
@@ -62,9 +75,34 @@ const WebsiteBuilder = ({ projectId }: WebsiteBuilderProps) => {
   };
 
   const loadTemplate = (template: Template) => {
+    saveCurrentState();
     setCurrentTemplate(template);
     setElements(template.elements);
     setSelectedElement(null);
+  };
+
+  // Add undo function
+  const handleUndo = () => {
+    if (pastStates.length === 0) return;
+    
+    const previousState = pastStates[pastStates.length - 1];
+    const newPastStates = pastStates.slice(0, pastStates.length - 1);
+    
+    setFutureStates([elements, ...futureStates]);
+    setElements(previousState);
+    setPastStates(newPastStates);
+  };
+
+  // Add redo function
+  const handleRedo = () => {
+    if (futureStates.length === 0) return;
+    
+    const nextState = futureStates[0];
+    const newFutureStates = futureStates.slice(1);
+    
+    setPastStates([...pastStates, elements]);
+    setElements(nextState);
+    setFutureStates(newFutureStates);
   };
 
   const handlePageChange = (pageId: string) => {
@@ -93,6 +131,10 @@ const WebsiteBuilder = ({ projectId }: WebsiteBuilderProps) => {
           onTogglePreview={() => setIsPreviewMode(!isPreviewMode)}
           onSave={() => console.log('Save project')}
           onPublish={() => console.log('Publish site')}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          canUndo={pastStates.length > 0}
+          canRedo={futureStates.length > 0}
         />
         
         {/* Page Navigation */}

@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { DraggableElement } from "./DraggableElement";
 import type { BuilderElement, ElementType } from "../WebsiteBuilder";
+import { DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 
 interface BuilderCanvasProps {
   elements: BuilderElement[];
@@ -23,6 +24,15 @@ export const BuilderCanvas = ({
 }: BuilderCanvasProps) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggedElement, setDraggedElement] = useState<string | null>(null);
+
+  // Configure dnd-kit sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5, // Minimum drag distance before activation
+      },
+    })
+  );
 
   const handleCanvasClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -55,6 +65,25 @@ export const BuilderCanvas = ({
     setDraggedElement(null);
   };
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, delta } = event;
+    const elementId = active.id as string;
+    
+    // Find the element
+    const element = elements.find(el => el.id === elementId);
+    if (element) {
+      // Update the element position
+      onUpdateElement(elementId, {
+        position: {
+          x: Math.max(0, element.position.x + delta.x),
+          y: Math.max(0, element.position.y + delta.y),
+        },
+      });
+    }
+    
+    handleElementDragEnd();
+  };
+
   return (
     <div className="flex-1 flex flex-col bg-gradient-canvas">
       {/* Canvas Header */}
@@ -74,52 +103,55 @@ export const BuilderCanvas = ({
       <div className="flex-1 p-8 overflow-auto">
         <div className="max-w-6xl mx-auto">
           {/* Canvas */}
-          <div
-            ref={canvasRef}
-            className={`
-              relative min-h-[800px] bg-card rounded-lg shadow-large overflow-hidden
-              ${!isPreviewMode ? 'border-2 border-dashed border-border' : 'border border-border'}
-            `}
-            onClick={handleCanvasClick}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            style={{
-              backgroundImage: !isPreviewMode 
-                ? `radial-gradient(circle, hsl(var(--canvas-grid)) 1px, transparent 1px)`
-                : 'none',
-              backgroundSize: !isPreviewMode ? '20px 20px' : 'auto',
-            }}
-          >
-            {elements.map((element) => (
-              <DraggableElement
-                key={element.id}
-                element={element}
-                isSelected={selectedElement === element.id}
-                isPreviewMode={isPreviewMode}
-                isDragging={draggedElement === element.id}
-                onSelect={() => onSelectElement(element.id)}
-                onUpdate={(updates) => onUpdateElement(element.id, updates)}
-                onDelete={() => onDeleteElement(element.id)}
-                onDragStart={() => handleElementDragStart(element.id)}
-                onDragEnd={handleElementDragEnd}
-              />
-            ))}
+          <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+            <div
+              ref={canvasRef}
+              className={`
+                relative min-h-[800px] bg-card rounded-lg shadow-large overflow-hidden
+                ${!isPreviewMode ? 'border-2 border-dashed border-border' : 'border border-border'}
+              `}
+              onClick={handleCanvasClick}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              style={{
+                backgroundImage: !isPreviewMode 
+                  ? `radial-gradient(circle, hsl(var(--canvas-grid)) 1px, transparent 1px)`
+                  : 'none',
+                backgroundSize: !isPreviewMode ? '20px 20px' : 'auto',
+              }}
+            >
+              {elements.map((element) => (
+                <DraggableElement
+                  key={element.id}
+                  element={element}
+                  isSelected={selectedElement === element.id}
+                  isPreviewMode={isPreviewMode}
+                  isDragging={draggedElement === element.id}
+                  onSelect={() => onSelectElement(element.id)}
+                  onUpdate={(updates) => onUpdateElement(element.id, updates)}
+                  onDelete={() => onDeleteElement(element.id)}
+                  onDragStart={() => handleElementDragStart(element.id)}
+                  onDragEnd={handleElementDragEnd}
+                />
+              ))}
 
-            {/* Empty State */}
-            {elements.length === 0 && !isPreviewMode && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="text-4xl">🎨</div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Start Building</h3>
-                    <p className="text-muted-foreground">
-                      Choose a template or drag elements from the sidebar
-                    </p>
+              {/* Empty State */}
+              {elements.length === 0 && !isPreviewMode && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center space-y-4 p-8 bg-card/50 rounded-xl shadow-medium max-w-md">
+                    <div className="text-5xl">✨</div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">Your Canvas Awaits</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Drag elements from the sidebar or select a template to start creating your beautiful website
+                      </p>
+                      <div className="text-sm text-accent">Pro tip: Double-click on text elements to edit them directly</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          </DndContext>
         </div>
       </div>
     </div>

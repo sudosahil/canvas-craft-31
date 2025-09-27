@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -21,10 +21,52 @@ interface BuilderSidebarProps {
   currentTemplate: TemplateType | null;
 }
 
+// Fix duplicate template ID by changing the second 'business' template ID to 'business-pro'
 const templates: TemplateType[] = [
   {
     id: "portfolio",
     name: "Creative Portfolio",
+    preview: "/api/placeholder/200/150",
+    elements: [
+      // Hero Section
+      {
+        id: "hero-title",
+        type: "text",
+        position: { x: 50, y: 100 },
+        size: { width: 600, height: 120 },
+        content: { text: "Creative Developer & Designer", tag: "h1" },
+        styles: {
+          fontSize: "56px",
+          fontWeight: "bold",
+          textAlign: "left",
+          lineHeight: "1.2",
+        },
+      },
+      {
+        id: "hero-subtitle",
+        type: "text",
+        position: { x: 50, y: 230 },
+        size: { width: 500, height: 60 },
+        content: { text: "I design and build beautiful and functional web experiences.", tag: "p" },
+        styles: { fontSize: "20px", color: "hsl(var(--muted-foreground))" },
+      },
+      {
+        id: "hero-button",
+        type: "button",
+        position: { x: 50, y: 300 },
+        size: { width: 150, height: 50 },
+        content: { text: "Get In Touch", href: "mailto:hello@example.com" },
+        styles: {
+          backgroundColor: "hsl(var(--primary))",
+          color: "hsl(var(--primary-foreground))",
+          borderRadius: "8px",
+        },
+      },
+    ],
+  },
+  {
+    id: "business-pro", // Changed from 'business' to 'business-pro'
+    name: "Professional Business",
     preview: "/api/placeholder/200/150",
     elements: [
       // Navigation
@@ -645,25 +687,62 @@ const templates: TemplateType[] = [
   }
 ];
 
-export const BuilderSidebar = ({ onAddElement, onLoadTemplate, currentTemplate }: BuilderSidebarProps) => {
-  const [activeTab, setActiveTab] = useState<"templates" | "elements" | "design">("templates");
+export const BuilderSidebar = ({
+  onAddElement,
+  onLoadTemplate,
+  currentTemplate,
+}: BuilderSidebarProps) => {
+  // Change default tab to elements instead of templates
+  const [activeTab, setActiveTab] = useState<"elements" | "design">("elements");
 
   const handleDragStart = (e: React.DragEvent, elementType: ElementType) => {
     e.dataTransfer.setData("elementType", elementType);
   };
 
   const elements = [
-    { type: "text" as ElementType, icon: Type, label: "Text" },
-    { type: "image" as ElementType, icon: Image, label: "Image" },
-    { type: "button" as ElementType, icon: Square, label: "Button" },
-    { type: "video" as ElementType, icon: Video, label: "Video" },
+    { 
+      type: "text" as ElementType, 
+      icon: Type, 
+      label: "Text",
+      description: "Add headings, paragraphs, or any text content" // Added description
+    },
+    { 
+      type: "image" as ElementType, 
+      icon: Image, 
+      label: "Image",
+      description: "Upload or embed images" // Added description
+    },
+    { 
+      type: "button" as ElementType, 
+      icon: Square, 
+      label: "Button",
+      description: "Add clickable buttons with custom actions" // Added description
+    },
+    // Remove this duplicate button entry with incorrect syntax
+    // type: "button" as const,
+    // icon: Square,
+    // label: "Button",
+    // description: "Add clickable buttons with custom actions" // Added description
+    // },
+    { 
+      type: "video" as ElementType, 
+      icon: Video, 
+      label: "Video",
+      description: "Embed videos from YouTube or other sources" // Added description
+    },
   ];
 
+  // Remove templates tab from the tabs array
   const tabs = [
-    { id: "templates", icon: FileText, label: "Templates" },
     { id: "elements", icon: Plus, label: "Elements" },
     { id: "design", icon: Palette, label: "Design" },
   ];
+
+  // When loading a template, switch to Elements tab
+  const handleLoadTemplate = (template: TemplateType) => {
+    onLoadTemplate(template);
+    setActiveTab("elements");
+  };
 
   return (
     <div className="w-80 flex bg-sidebar border-r border-border">
@@ -684,7 +763,8 @@ export const BuilderSidebar = ({ onAddElement, onLoadTemplate, currentTemplate }
 
       {/* Content Area */}
       <div className="flex-1 flex flex-col p-4">
-        {activeTab === "templates" && (
+        {/* Remove this entire block since templates tab is removed */}
+        {/* {activeTab === "templates" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-sidebar-foreground">Templates</h3>
@@ -697,7 +777,7 @@ export const BuilderSidebar = ({ onAddElement, onLoadTemplate, currentTemplate }
                   className={`p-3 cursor-pointer transition-all hover:shadow-medium ${
                     currentTemplate?.id === template.id ? 'ring-2 ring-primary' : ''
                   }`}
-                  onClick={() => onLoadTemplate(template)}
+                  onClick={() => handleLoadTemplate(template)}
                 >
                   <div className="aspect-[4/3] bg-canvas rounded-md mb-2"></div>
                   <h4 className="font-medium text-sm">{template.name}</h4>
@@ -705,7 +785,7 @@ export const BuilderSidebar = ({ onAddElement, onLoadTemplate, currentTemplate }
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
         {activeTab === "elements" && (
           <div className="space-y-4">
@@ -724,6 +804,7 @@ export const BuilderSidebar = ({ onAddElement, onLoadTemplate, currentTemplate }
                   <div className="flex flex-col items-center space-y-2">
                     <element.icon className="h-6 w-6 text-muted-foreground" />
                     <span className="text-xs font-medium">{element.label}</span>
+                    <p className="text-[10px] text-muted-foreground text-center">{element.description}</p>
                   </div>
                 </Card>
               ))}
@@ -770,3 +851,20 @@ export const BuilderSidebar = ({ onAddElement, onLoadTemplate, currentTemplate }
     </div>
   );
 };
+
+// Auto-load Zay Shop template when component mounts
+// Remove this incorrect useState usage
+// useState(() => {
+//   const zayShopTemplate = templates.find(template => template.id === "zay-shop");
+//   if (zayShopTemplate && !currentTemplate) {
+//     onLoadTemplate(zayShopTemplate);
+//   }
+// }, []);
+
+// Keep only this correct useEffect hook
+useEffect(() => {
+  // Since 'zay-shop' template doesn't exist, we'll use the first template instead
+  if (!currentTemplate && templates.length > 0) {
+    onLoadTemplate(templates[0]);
+  }
+}, [currentTemplate]); // Remove onLoadTemplate and templates from dependencies
